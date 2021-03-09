@@ -3,6 +3,69 @@ from django_countries.fields import CountryField
 from core import models as core_models
 from users import models as user_models
 
+# Field name for RoomType, Amenity and Facility model
+class AbstractItem(core_models.TimeStampedModel):
+
+    ''' Abstract Item '''
+
+    name = models.CharField(max_length=80)
+
+    class Meta:
+        abstract = True 
+
+    def __str__(self):
+        return self.name
+
+
+class RoomType(AbstractItem):
+
+    ''' RoomType Object Definition ''' 
+
+    class Meta:
+        verbose_name = 'Room Type'
+        verbose_name_plural = 'Room Types' 
+        ordering = ['name'] # https://docs.djangoproject.com/en/3.1/ref/models/options/#ordering
+
+
+class Amenity(AbstractItem):
+
+    ''' Amenity Model Definition ''' 
+
+    # 4.5 
+    class Meta:
+        verbose_name = 'Amenity'
+        verbose_name_plural = 'Amenities' # https://docs.djangoproject.com/en/3.1/ref/models/options/#verbose-name-plural
+
+
+class Facility(AbstractItem):
+
+    ''' Facility Model Definition ''' 
+
+    class Meta:
+        verbose_name = 'Facility'
+        verbose_name_plural = 'Facilities'
+
+
+class HouseRule(AbstractItem): # House rules
+    
+    ''' HouseRule Model Definition ''' 
+
+    class Meta:
+        verbose_name = 'House Rule'
+        verbose_name_plural = 'House Rules'
+
+class Photo(core_models.TimeStampedModel):
+    
+    ''' Photo Model Definition '''
+
+    caption = models.CharField(max_length=80)
+    file = models.ImageField()
+    room = models.ForeignKey('Room', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.caption
+
+
 class Room(core_models.TimeStampedModel):
 
     ''' Room Model Definition '''
@@ -20,4 +83,12 @@ class Room(core_models.TimeStampedModel):
     instant_book = models.BooleanField(default=False)
     check_in = models.TimeField()
     check_out = models.TimeField()
-    host = models.ForeignKey(user_models.User, on_delete=models.CASCADE) #4.1~4.2
+    host = models.ForeignKey(user_models.User, on_delete=models.CASCADE) #4.1~4.2 https://docs.djangoproject.com/en/3.1/ref/models/fields/#foreignkey
+    room_type = models.ForeignKey('RoomType', on_delete=models.SET_NULL, null=True) #4.3 https://docs.djangoproject.com/en/3.1/ref/models/fields/#manytomanyfield 
+    amenities = models.ManyToManyField('Amenity', blank=True) #4.4
+    facilities = models.ManyToManyField('Facility', blank=True) #4.4
+    house_rules = models.ManyToManyField('HouseRule', blank=True) #4.4
+
+    #4.3 
+    def __str__(self):
+        return self.name 
