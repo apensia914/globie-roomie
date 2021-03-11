@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import mark_safe #8.5 https://docs.djangoproject.com/en/3.1/ref/utils/#module-django.utils.html
+# Allow weird html tags input within admin site 
 from . import models
 
 @admin.register(models.RoomType, models.Amenity, models.Facility, models.HouseRule) #4.4
@@ -91,4 +93,11 @@ class PhotoAdmin(admin.ModelAdmin):
 
     ''' Photo Admin Definition ''' 
 
-    pass 
+    list_display = (
+        '__str__',
+        'get_thumbnail',
+    ) 
+
+    def get_thumbnail(self, obj): #8.5
+        return mark_safe(f'<img width="150px" src="{obj.file.url}" />') #8.5
+    get_thumbnail.short_description = 'Thumbnail'
