@@ -16,10 +16,15 @@ class ItemAdmin(admin.ModelAdmin):
     def used_by(self, obj): #7.3
         return obj.rooms.count()
 
+class PhotoInline(admin.TabularInline): #8.6 Inline Admin : https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.TabularInline 
+    model = models.Photo
+
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
 
     ''' Room Admin Definition ''' 
+
+    inlines = (PhotoInline,) # 8.6 
 
     fieldsets = (
         (
@@ -75,9 +80,15 @@ class RoomAdmin(admin.ModelAdmin):
         'host__gender', #6.1 Can add filter from different models
     ) 
 
+    raw_id_fields = ('host',) #8.6 https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.raw_id_fields 
     search_fields = ['city', 'host__username'] #6.0 Search-bar in admin (https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields)
     filter_horizontal = ['amenities', 'facilities', 'house_rules'] #6.1 Applies to ManyToMany Relationships (https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.filter_horizontal)
     ordering = ('name', 'price', 'bedrooms') #6.2 https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.ordering
+
+    #8.8 https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.save_model 
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
 
     #6.2 Custom admin function: returning number of amenities
     def count_amenities(self, obj):

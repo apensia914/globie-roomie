@@ -91,7 +91,14 @@ class Room(core_models.TimeStampedModel):
 
     #4.3 
     def __str__(self):
-        return self.name 
+        return self.name
+
+    #8.7 save method controlling: 
+    # e.g) If somebody put "seoul", it will automatically transfer into "Seoul".
+    # https://docs.djangoproject.com/en/3.1/topics/db/models/#overriding-predefined-model-methods 
+    def save(self, *args, **kwargs):
+        self.city = str.capitalize(self.city)
+        super().save(*args, **kwargs) # Call the "real" save() method.  
     
     #8.0 Calculating all reviews (for room) average
     def total_rating(self):
