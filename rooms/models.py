@@ -59,7 +59,7 @@ class Photo(core_models.TimeStampedModel):
     ''' Photo Model Definition '''
 
     caption = models.CharField(max_length=80)
-    file = models.ImageField()
+    file = models.ImageField(upload_to='room_photos') #8.3 upload_to : https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
     room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="photos")
 
     def __str__(self):

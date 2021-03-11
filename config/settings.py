@@ -136,3 +136,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.User' #3.1
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #8.3 https://docs.djangoproject.com/en/3.1/ref/settings/#media-root
+
+MEDIA_URL = '/media/' #8.4 MEDIA_URL : https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-MEDIA_URL 
