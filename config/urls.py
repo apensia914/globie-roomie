@@ -14,13 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings #8.4 How to import settings
 from django.conf.urls.static import static #8.4 
 # We would not like to include example pictures on server. We are only doing in development stage.
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('core.urls', namespace='core')),
 ]
 
 if settings.DEBUG:

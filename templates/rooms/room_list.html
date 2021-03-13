@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block page_name %}home{% endblock page_name %}
+    
+
+{% block content %}
+
+
+    {% for room in rooms %}
+        <h1>{{room.name}} / ${{room.price}}</h1>
+    {% endfor %}
+
+    {{now }}
+    
+    <h5>
+        
+        {% if page_obj.has_previous %} <!--11.4 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.has_previous -->
+            <a href="?page={{page_obj.previous_page_number}}">Previous</a> <!--11.5 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.previous_page_number -->
+        {% endif %}
+        
+        Page {{page_obj.number}} of {{page_obj.paginator.num_pages}} <!--11.4-->
+        
+        {% if page_obj.has_next %} <!--11.4 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.has_next -->
+            <a href="?page={{page_obj.next_page_number}}">Next</a> <!--11.5 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.next_page_number -->
+        {% endif %}
+
+        
+        {% for page in page.paginator.page_range %}
+            {{page}}
+        {% endfor %}
+            
+            
+    </h5>
+    
+{% endblock content %}
+    
