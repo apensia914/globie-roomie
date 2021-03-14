@@ -1,5 +1,4 @@
-from django.utils import timezone #11.8
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from . import models
 
 class HomeView(ListView):
@@ -15,8 +14,6 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        now = timezone.now()
-        context['now'] = now 
         return context
     
 
@@ -27,3 +24,18 @@ class HomeView(ListView):
     #11.7 Class Based View - ListView: https://docs.djangoproject.com/en/3.1/ref/class-based-views/generic-display/#listview 
           CCBV - ListView: http://ccbv.co.uk/projects/Django/3.1/django.views.generic.list/ListView/ 
     '''
+
+def room_detail(request, pk):
+    #12.2 Exception
+    try: 
+        room = models.Room.objects.get(pk=pk)
+        return render(request, 'rooms/room_detail.html', {'room': room})
+    except models.Room.DoesNotExist:
+        raise Http404() #12.3 
+
+class RoomDetail(DetailView):
+    
+    ''' RoomDetail Definition '''
+
+    model = models.Room
+    

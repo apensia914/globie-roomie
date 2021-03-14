@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse #12.1 Reverse: function takes url name and return url 
 from django_countries.fields import CountryField
 from core import models as core_models
 from users import models as user_models
@@ -99,6 +100,10 @@ class Room(core_models.TimeStampedModel):
     def save(self, *args, **kwargs):
         self.city = str.capitalize(self.city)
         super().save(*args, **kwargs) # Call the "real" save() method.  
+
+    #12.1 get_absolute_url: Gives URL for model that I want to search. 
+    def get_context_data(self, **kwargs):
+        return reverse('rooms:detail', kwrags={'pk': self.pk})
     
     #8.0 Calculating all reviews (for room) average
     def total_rating(self):
