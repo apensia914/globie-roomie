@@ -25,14 +25,6 @@ class HomeView(ListView):
           CCBV - ListView: http://ccbv.co.uk/projects/Django/3.1/django.views.generic.list/ListView/ 
     '''
 
-def room_detail(request, pk):
-    #12.2 Exception
-    try: 
-        room = models.Room.objects.get(pk=pk)
-        return render(request, 'rooms/room_detail.html', {'room': room})
-    except models.Room.DoesNotExist:
-        raise Http404() #12.3 
-
 class RoomDetail(DetailView):
     
     ''' RoomDetail Definition '''
