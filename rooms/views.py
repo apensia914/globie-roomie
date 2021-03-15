@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from . import models
+from . import models, forms
 
 class HomeView(ListView):
 
@@ -30,4 +30,7 @@ class RoomDetail(DetailView):
     ''' RoomDetail Definition '''
 
     model = models.Room
-    
+
+def search(request):
+    form = forms.SearchForm()
+    return render(request, 'rooms/room_search.html', {'form': form})
