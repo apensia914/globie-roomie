@@ -1,3 +1,9 @@
-from django.shortcuts import render
+#14.0 Setting up login form 
+from django.views import View
 
-# Create your views here.
+class LoginView(View):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass

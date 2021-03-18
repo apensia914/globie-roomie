@@ -1,5 +1,5 @@
 from django import forms
-from django_countries.widgets import CountryField #13.8
+from django_countries.fields import CountryField #13.8
 from . import models
 
 class SearchForm(forms.Form):

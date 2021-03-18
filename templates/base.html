@@ -7,14 +7,15 @@
     <title>{% block page_name %}{% endblock page_name %} | Globie-Roomie</title>
 </head>
 <body>
-
-    {% include 'partials/header.html' %}
-
-    {% block search-bar %}
-        <form method="get" action="{% url 'rooms:search' %}">
-            <input name="city" placeholder="Search By City">
-        </form>
-    {% endblock search-bar %}
+    <header>
+        {% include 'partials/header.html' %}
+    
+        {% block search-bar %}
+            <form method="get" action="{% url 'rooms:search' %}">
+                <input name="city" placeholder="Search By City">
+            </form>
+        {% endblock search-bar %}
+    </header>
     
     {% block content %}{% endblock content %}
 
