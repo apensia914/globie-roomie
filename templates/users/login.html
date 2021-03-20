@@ -5,7 +5,9 @@
 {% block search-bar %}{% endblock search-bar %}
     
 {% block content %}
+    
     <form action="{% url 'users:login' %}" method="POST">
+        {% csrf_token %}
         {{ form.as_p }}
         <button>Login</button>
     </form>
