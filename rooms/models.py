@@ -1,10 +1,9 @@
 from django.db import models
-from django.urls import reverse #12.1 Reverse: function takes url name and return url 
+from django.urls import reverse 
 from django_countries.fields import CountryField
 from core import models as core_models
 from users import models as user_models
 
-# Field name for RoomType, Amenity and Facility model
 class AbstractItem(core_models.TimeStampedModel):
 
     ''' Abstract Item '''
@@ -25,7 +24,7 @@ class RoomType(AbstractItem):
     class Meta:
         verbose_name = 'Room Type'
         verbose_name_plural = 'Room Types' 
-        ordering = ['name'] # https://docs.djangoproject.com/en/3.1/ref/models/options/#ordering
+        ordering = ['name'] 
 
 
 class Amenity(AbstractItem):
@@ -35,7 +34,7 @@ class Amenity(AbstractItem):
     # 4.5 
     class Meta:
         verbose_name = 'Amenity'
-        verbose_name_plural = 'Amenities' # https://docs.djangoproject.com/en/3.1/ref/models/options/#verbose-name-plural
+        verbose_name_plural = 'Amenities' 
 
 
 class Facility(AbstractItem):
@@ -60,7 +59,7 @@ class Photo(core_models.TimeStampedModel):
     ''' Photo Model Definition '''
 
     caption = models.CharField(max_length=80)
-    file = models.ImageField(upload_to='room_photos') #8.3 upload_to : https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
+    file = models.ImageField(upload_to='room_photos') 
     room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="photos")
 
     def __str__(self):
@@ -73,7 +72,7 @@ class Room(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=140)
     description = models.TextField()
-    country = CountryField() #4.1 Django-countries (https://pypi.org/project/django-countries/)
+    country = CountryField() 
     city = models.CharField(max_length=80)
     price = models.IntegerField()
     address = models.CharField(max_length=140)
@@ -84,32 +83,25 @@ class Room(core_models.TimeStampedModel):
     instant_book = models.BooleanField(default=False)
     check_in = models.TimeField()
     check_out = models.TimeField()
-    host = models.ForeignKey(user_models.User, on_delete=models.CASCADE, related_name='rooms') #4.1~4.2 https://docs.djangoproject.com/en/3.1/ref/models/fields/#foreignkey
-    room_type = models.ForeignKey('RoomType', on_delete=models.SET_NULL, null=True, related_name='rooms') #4.3 https://docs.djangoproject.com/en/3.1/ref/models/fields/#manytomanyfield 
-    amenities = models.ManyToManyField('Amenity', blank=True, related_name='rooms') #4.4 #7.2
-    facilities = models.ManyToManyField('Facility', blank=True, related_name='rooms') #4.4 #7.2
-    house_rules = models.ManyToManyField('HouseRule', blank=True, related_name='rooms') #4.4 #7.2 related_name (https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ForeignKey.related_name)
+    host = models.ForeignKey(user_models.User, on_delete=models.CASCADE, related_name='rooms') 
+    room_type = models.ForeignKey('RoomType', on_delete=models.SET_NULL, null=True, related_name='rooms') 
+    amenities = models.ManyToManyField('Amenity', blank=True, related_name='rooms') 
+    facilities = models.ManyToManyField('Facility', blank=True, related_name='rooms') 
+    house_rules = models.ManyToManyField('HouseRule', blank=True, related_name='rooms') 
 
-    #4.3 
     def __str__(self):
         return self.name
 
-    #8.7 save method controlling: 
-    # e.g) If somebody put "seoul", it will automatically transfer into "Seoul".
-    # https://docs.djangoproject.com/en/3.1/topics/db/models/#overriding-predefined-model-methods 
     def save(self, *args, **kwargs):
         self.city = str.capitalize(self.city)
-        super().save(*args, **kwargs) # Call the "real" save() method.  
-
-    #12.1 get_absolute_url: Gives URL for model that I want to search. 
+        super().save(*args, **kwargs)  
+    
     def get_context_data(self, **kwargs):
         return reverse('rooms:detail', kwrags={'pk': self.pk})
     
-    #8.0 Calculating all reviews (for room) average
     def total_rating(self):
         all_reviews = self.reviews.all()
         all_ratings = 0
-        #9.3 ZeroDivisionError error fixed
         if len(all_reviews) > 0:
             for review in all_reviews:
                 all_ratings += review.rating_average()

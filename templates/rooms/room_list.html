@@ -8,7 +8,7 @@
 
     {% for room in rooms %}
         <h1>
-            <a href="{% url 'rooms:detail' room.pk %}"> <!--#12.0 Django URL connection-->
+            <a href="{% url 'rooms:detail' room.pk %}"> 
                 {{room.name}} / ${{room.price}}
             </a>
         </h1>
@@ -18,14 +18,14 @@
     
     <h5>
         
-        {% if page_obj.has_previous %} <!--11.4 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.has_previous -->
-            <a href="?page={{page_obj.previous_page_number}}">Previous</a> <!--11.5 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.previous_page_number -->
+        {% if page_obj.has_previous %} 
+            <a href="?page={{page_obj.previous_page_number}}">Previous</a> 
         {% endif %}
         
-        Page {{page_obj.number}} of {{page_obj.paginator.num_pages}} <!--11.4-->
+        Page {{page_obj.number}} of {{page_obj.paginator.num_pages}} 
         
-        {% if page_obj.has_next %} <!--11.4 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.has_next -->
-            <a href="?page={{page_obj.next_page_number}}">Next</a> <!--11.5 https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Page.next_page_number -->
+        {% if page_obj.has_next %} 
+            <a href="?page={{page_obj.next_page_number}}">Next</a> 
         {% endif %}
 
         

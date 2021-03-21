@@ -5,8 +5,8 @@ class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-    #14.2 Validating Email
-    def clean_email(self): # In order to check validity, method should always start with "clean_". 
+    # Validating Email
+    def clean_email(self): 
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
         try:
@@ -18,7 +18,6 @@ class LoginForm(forms.Form):
         except models.User.DoesNotExist:
             self.add_error('email', forms.ValidationError('User does not exist'))
 
-#15.0
 class SignUpForm(forms.ModelForm):
     class Meta: 
         model = models.User
@@ -36,7 +35,7 @@ class SignUpForm(forms.ModelForm):
     #     except models.User.DoesNotExist:
     #         return email
     
-    #15.0 Validating password
+    # Validating password
     def clean_re_password(self):
         password = self.cleaned_data.get('password')
         re_password = self.cleaned_data.get('re_password')
@@ -46,7 +45,6 @@ class SignUpForm(forms.ModelForm):
         else:
             return password 
     
-    #15.2 
     def save(self, *args, **kwargs):
         user = super().save(commit=False)
         email = self.cleaned_data.get('email')

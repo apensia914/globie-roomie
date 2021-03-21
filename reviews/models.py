@@ -15,12 +15,10 @@ class Review(core_models.TimeStampedModel):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='reviews')
     room = models.ForeignKey('rooms.Room', on_delete=models.CASCADE, related_name='reviews')
 
-    #5.0 
     def __str__(self):
-        return f'{self.review} - {self.room}' # We can access to different value from ForeignKey 
+        return f'{self.review} - {self.room}' 
     
-    #8.0 
-    def rating_average(self): # When you want to use function in public, you may make it inside of model
+    def rating_average(self): 
         avg = (self.accuracy + self.communication + self.cleanliness + self.location + self.check_in + self.value) / 6
         return round(avg, 2)
     rating_average.short_description = 'Average'

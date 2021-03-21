@@ -1,13 +1,13 @@
 from django import forms
-from django_countries.fields import CountryField #13.8
+from django_countries.fields import CountryField 
 from . import models
 
 class SearchForm(forms.Form):
     
     city = forms.CharField(initial='Anywhere')
-    country = CountryField(default='KR').formfield() #13.8
+    country = CountryField(default='KR').formfield() 
     price = forms.IntegerField(required=False)
-    room_type = forms.ModelChoiceField(required=False, empty_label='Any Kind', queryset=models.RoomType.objects.all()) #13.7 ModelChoiceField
+    room_type = forms.ModelChoiceField(required=False, empty_label='Any Kind', queryset=models.RoomType.objects.all()) 
     guests = forms.IntegerField(required=False)
     beds = forms.IntegerField(required=False)
     bedrooms = forms.IntegerField(required=False)
@@ -16,9 +16,3 @@ class SearchForm(forms.Form):
     superhost = forms.BooleanField(required=False)
     amenities = forms.ModelMultipleChoiceField(queryset=models.Amenity.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     facilities = forms.ModelMultipleChoiceField(queryset=models.Facility.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
-
-
-    '''
-    ** Documentation URL Link
-    #13.7 ModelChoiceField: https://docs.djangoproject.com/en/3.1/ref/forms/fields/#django.forms.ModelChoiceField
-    '''

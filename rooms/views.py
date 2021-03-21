@@ -16,15 +16,7 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-    
 
-    ''' 
-    #11.4 paginator: https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Paginator 
-    #11.5 orphan: https://docs.djangoproject.com/en/3.1/ref/paginator/#django.core.paginator.Paginator.orphans 
-    #11.6 Handling exception: 
-    #11.7 Class Based View - ListView: https://docs.djangoproject.com/en/3.1/ref/class-based-views/generic-display/#listview 
-          CCBV - ListView: http://ccbv.co.uk/projects/Django/3.1/django.views.generic.list/ListView/ 
-    '''
 
 class RoomDetail(DetailView):
     
@@ -39,9 +31,9 @@ class SearchView(View):
     def get(self, request):
         country = request.GET.get('country')
         if country:
-            form = forms.SearchForm(request.GET) #13.9 It remembers what we chose. 
+            form = forms.SearchForm(request.GET)  
 
-            if form.is_valid(): #13.9 If form has valid
+            if form.is_valid(): 
                 city = form.cleaned_data.get('city')
                 country = form.cleaned_data.get('country')
                 price = form.cleaned_data.get('price')

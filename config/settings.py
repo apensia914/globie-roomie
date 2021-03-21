@@ -136,11 +136,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'users.User' #3.1
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #8.3 https://docs.djangoproject.com/en/3.1/ref/settings/#media-root
+AUTH_USER_MODEL = 'users.User' 
 
-MEDIA_URL = '/media/' #8.4 MEDIA_URL : https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-MEDIA_URL 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+
+MEDIA_URL = '/media/' 
 
 
 # Email configuration
@@ -152,3 +156,5 @@ EMAIL_PORT = '587'
 EMAIL_HOST_USER = os.environ.get('MAILGUN_USERNAME')
 
 EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_PASSWORD')
+
+EMAIL_FROM = 'globie-roomie@sandbox721efc359c6849a5a646522b02d2f772.mailgun.org'

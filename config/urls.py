@@ -15,9 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings #8.4 How to import settings
-from django.conf.urls.static import static #8.4 
-# We would not like to include example pictures on server. We are only doing in development stage.
+from django.conf import settings 
+from django.conf.urls.static import static 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +26,4 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # When under developing, we'd like to use static files in MEDIA_URL/ROOT
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

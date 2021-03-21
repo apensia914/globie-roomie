@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.utils.html import mark_safe #8.5 https://docs.djangoproject.com/en/3.1/ref/utils/#module-django.utils.html
-# Allow weird html tags input within admin site 
+from django.utils.html import mark_safe 
 from . import models
 
 @admin.register(models.RoomType, models.Amenity, models.Facility, models.HouseRule) #4.4
@@ -8,15 +7,15 @@ class ItemAdmin(admin.ModelAdmin):
 
     ''' Item Admin Definition ''' 
 
-    list_display = ( #7.3
+    list_display = ( 
         'name',
         'used_by',
     )
 
-    def used_by(self, obj): #7.3
+    def used_by(self, obj):
         return obj.rooms.count()
 
-class PhotoInline(admin.TabularInline): #8.6 Inline Admin : https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.TabularInline 
+class PhotoInline(admin.TabularInline): 
     model = models.Photo
 
 @admin.register(models.Room)
@@ -24,7 +23,7 @@ class RoomAdmin(admin.ModelAdmin):
 
     ''' Room Admin Definition ''' 
 
-    inlines = (PhotoInline,) # 8.6 
+    inlines = (PhotoInline,) 
 
     fieldsets = (
         (
@@ -64,8 +63,8 @@ class RoomAdmin(admin.ModelAdmin):
         'check_out',
         'instant_book',
         'count_amenities',
-        'count_photos', #7.3
-        'total_rating', #8.0
+        'count_photos', 
+        'total_rating', 
     )
 
     list_filter = (
@@ -76,16 +75,15 @@ class RoomAdmin(admin.ModelAdmin):
         'amenities', 
         'facilities', 
         'house_rules', 
-        'host__superhost', #6.1 Can add filter from different models
-        'host__gender', #6.1 Can add filter from different models
+        'host__superhost', 
+        'host__gender', 
     ) 
 
-    raw_id_fields = ('host',) #8.6 https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.raw_id_fields 
-    search_fields = ['city', 'host__username'] #6.0 Search-bar in admin (https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields)
-    filter_horizontal = ['amenities', 'facilities', 'house_rules'] #6.1 Applies to ManyToMany Relationships (https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.filter_horizontal)
-    ordering = ('name', 'price', 'bedrooms') #6.2 https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.ordering
-
-    #8.8 https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.save_model 
+    raw_id_fields = ('host',) 
+    search_fields = ['city', 'host__username'] 
+    filter_horizontal = ['amenities', 'facilities', 'house_rules'] 
+    ordering = ('name', 'price', 'bedrooms') 
+    
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super().save_model(request, obj, form, change)
@@ -109,6 +107,6 @@ class PhotoAdmin(admin.ModelAdmin):
         'get_thumbnail',
     ) 
 
-    def get_thumbnail(self, obj): #8.5
-        return mark_safe(f'<img width="150px" src="{obj.file.url}" />') #8.5
+    def get_thumbnail(self, obj): 
+        return mark_safe(f'<img width="150px" src="{obj.file.url}" />') 
     get_thumbnail.short_description = 'Thumbnail'
