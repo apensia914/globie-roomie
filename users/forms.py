@@ -19,21 +19,22 @@ class LoginForm(forms.Form):
             self.add_error('email', forms.ValidationError('User does not exist'))
 
 #15.0
-class SignUpForm(forms.Form):
-    first_name = forms.CharField(max_length=80)
-    last_name = forms.CharField(max_length=80)
-    email = forms.EmailField()
+class SignUpForm(forms.ModelForm):
+    class Meta: 
+        model = models.User
+        fields = ['first_name', 'last_name', 'email']
+
     password = forms.CharField(widget=forms.PasswordInput)
     re_password = forms.CharField(widget=forms.PasswordInput)
 
-    #15.0 Validating email
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        try:
-            models.User.objects.get(email=email)
-            raise forms.ValidationError('User already exists with that email')
-        except models.User.DoesNotExist:
-            return email
+    # #15.0 Validating email
+    # def clean_email(self):
+    #     email = self.cleaned_data.get('email')
+    #     try:
+    #         models.User.objects.get(email=email)
+    #         raise forms.ValidationError('User already exists with that email')
+    #     except models.User.DoesNotExist:
+    #         return email
     
     #15.0 Validating password
     def clean_re_password(self):
@@ -45,17 +46,13 @@ class SignUpForm(forms.Form):
         else:
             return password 
     
-    #15.1
-    def save(self):
-        first_name = self.cleaned_data.get('first_name')
-        last_name = self.cleaned_data.get('last_name')
+    #15.2 
+    def save(self, *args, **kwargs):
+        user = super().save(commit=False)
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
-
-        user = models.User.objects.create_user(email, email, password) # Creating user with encrypted password
-
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
+        user.username = email
+        user.set_password(password)
+        user.save() 
 
         
